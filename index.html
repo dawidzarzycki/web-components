@@ -9,23 +9,23 @@
   <body>
     <h1>Web components Input we accessibility and label</h1>
     <form>
-      <label for="name">Name</label>
-      <custom-input
-        aria-label="name"
-        id="name"
-        name="name"
-        type="name"
-      ></custom-input>
+      <label for="name" id="name">Name</label>
+      <custom-input id="name" name="name" type="name"></custom-input>
     </form>
 
     <label for="surname">
       Surname
-      <custom-input
-        aria-label="surname"
-        id="surname"
-        name="surname"
-        type="surname"
-      ></custom-input>
+      <custom-input id="surname" name="surname" type="surname"></custom-input>
+    </label>
+
+    <label for="email">
+      Email
+      <input type="email" />
+    </label>
+
+    <label for="surname">
+      Surname
+      <input type="text" name="surname" />
     </label>
   </body>
 </html>

@@ -3,10 +3,12 @@ class CustomInput extends HTMLElement {
     super();
 
     this.attachShadow({ mode: "open" });
+    this.attachInternals();
 
     this.inputValue = "";
     this.idValue = "";
-    this.ariaLabelValue = "";
+
+    this.input = document.createElement("input");
   }
 
   static get observedAttributes() {
@@ -23,10 +25,6 @@ class CustomInput extends HTMLElement {
         this.idValue = this.getAttribute("id");
         break;
 
-      case "aria-label":
-        this.ariaLabelValue = this.getAttribute("aria-label");
-        break;
-
       default:
         break;
     }
@@ -37,17 +35,28 @@ class CustomInput extends HTMLElement {
   }
 
   renderInput() {
-    const input = document.createElement("input");
-    input.setAttribute("name", "name");
-    input.setAttribute("type", this.inputValue);
-    input.setAttribute("id", this.idValue);
-    input.setAttribute("aria-label", this.ariaLabelValue);
+    this.input.setAttribute("name", "name");
+    this.input.setAttribute("type", this.inputValue);
+    this.input.setAttribute("id", this.idValue);
 
-    input.addEventListener("input", (ev) => {
+    this.input.addEventListener("input", (ev) => {
       console.log(ev.target.value);
     });
 
-    this.shadowRoot.appendChild(input);
+    this.shadowRoot.appendChild(this.input);
+    this.getLabel();
+  }
+
+  getLabel() {
+    if (this.parentNode.nodeName === "LABEL") {
+      this.input.setAttribute("aria-label", this.parentNode.textContent);
+    } else {
+      const label = [
+        ...document.querySelectorAll(`label[for=${this.idValue}]`),
+      ];
+
+      if (label) this.input.setAttribute("aria-label", label[0].innerText);
+    }
   }
 
   render() {
